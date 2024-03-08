@@ -5,7 +5,8 @@
 float *summary(float f[]);
 float *moving_avg(float f[]);
 int *sort(float f[]);
-void swap(float *x, float *y);
+void swap_float(float *x, float *y);
+void swap_int(int *x, int *y);
 
 int main(){
 
@@ -21,33 +22,33 @@ int main(){
     for(int i = 0; i < 12; i++){
         fscanf(fptr, "%f", &monthly_sales[i]);
     }
-    printf("Monthly sales report for 2022:\n");
+    printf("Monthly sales report for 2022:\n\n");
     printf("%-12s", "Month");
     printf("%s","Sales\n");
     for(int i = 0; i < 12; i++){
-        printf("%-12s%-12.02f\n", month[i], monthly_sales[i]);
+        printf("%-12s%s%-12.02f\n", month[i], "$", monthly_sales[i]);
     }
 
     float *sum;
     sum = summary(monthly_sales);
-    printf("Sales summary\n");
+    printf("\nSales summary\n\n");
     printf("%-15s%s%-10.02f%s%s%s\n", "Minimum sales:", "$", sum[0], "(", month[(int)sum[1]], ")");
     printf("%-15s%s%-10.02f%s%s%s\n", "Maximum sales:", "$", sum[2], "(", month[(int)sum[3]], ")");
     printf("%-15s%s%-10.02f\n", "Average sales:", "$", sum[4]);
 
     sum = moving_avg(monthly_sales);
-    printf("Six-Month Moving Average Report:\n");
+    printf("\nSix-Month Moving Average Report:\n\n");
     for(int i = 0; i < 7; i++){
         printf("%-10s%-2s%-10s%s%-12.02f\n", month[i], "-", month[i+5], "$", sum[i]);
     }
 
     int *month_ptr;
     month_ptr = sort(monthly_sales);
-    printf("Sales Report (Highest to Lowest):\n");
+    printf("\nSales Report (Highest to Lowest):\n\n");
     printf("%-12s", "Month");
     printf("%s","Sales\n");
     for(int i = 0; i < 12; i++){
-        printf("%-12s%-12.02f\n", month[month_ptr[i]], monthly_sales[i]);
+        printf("%-12s%s%-12.02f\n", month[month_ptr[i]], "$", monthly_sales[i]);
     }
 
     return 0;
@@ -101,17 +102,21 @@ int *sort(float f[]){
             }
         }
         if(idx != i){
-            swap(&f[idx], &f[i]);
-            int temp = m[idx];
-            m[idx] = i;
-            m[i] = temp;
+            swap_float(&f[idx], &f[i]);
+            swap_int(&m[idx], &m[i]);
         }
     }
     return m;
 }
 
-void swap(float *x, float *y){
+void swap_float(float *x, float *y){
     float temp = *x;
+    *x = *y;
+    *y = temp;
+}
+
+void swap_int(int *x, int *y){
+    int temp = *x;
     *x = *y;
     *y = temp;
 }
