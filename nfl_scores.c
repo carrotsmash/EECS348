@@ -1,11 +1,5 @@
 #include <stdio.h>
 
-int safetys(int score);
-int field_goals(int score);
-int tds(int score);
-int td_plus_xp(int score);
-int td_plus_twop(int score);
-
 int main(){
     int score;
     do{
@@ -29,7 +23,7 @@ int main(){
                 total_count[safety][0]++;
                 score_tracker[safety]-=2;
             }
-            for(int fg = 3; fg <= score; fg++){
+            for(int fg = 2; fg <= score; fg++){
                 while(score_tracker[fg] >= 3 && score_tracker[fg] != 4){
                     total_count[fg][1]++;
                     score_tracker[fg]-=3;
@@ -54,53 +48,27 @@ int main(){
                 }
             }
         }
+        int transfer_count[score+1][5];
         for(int i = 2; i < score+1; i++){
             if((total_count[i][0] == total_count[i-1][0]) && (total_count[i][1] == total_count[i-1][1]) && (total_count[i][2] == total_count[i-1][2]) && (total_count[i][3] == total_count[i-1][3]) && (total_count[i][4] == total_count[i-1][4])){
-                 //skip double
+                //skip doubles
             }
-            else printf("%d TD+2pt, %d TD+1pt, %d TD, %d FG, %d safetys\n", total_count[i][4], total_count[i][3], total_count[i][2], total_count[i][1], total_count[i][0]);
+            else{
+                for(int j = 0; j < 5; j++){
+                    transfer_count[i][j] = total_count[i][j];
+                }
+                printf("%d TD+2pt, %d TD+1pt, %d TD, %d FG, %d safetys\n", transfer_count[i][4], transfer_count[i][3], transfer_count[i][2], transfer_count[i][1], transfer_count[i][0]);
+            } 
+            //ran out of time here but to continue
+            //currently the program only shows the max values of each type
+            //so next i would program functions to splits the max values of each
+            //pseudo code:
+            //if FG >= 3 then take 2 FG and make it 3 safetys
+            //if TD >= 2 then take 1 TD and make it 2 FGs then repeat above
+            //if TD+1pt >= 2 then take 1 TD+1pt and make it 1 FG and 2 safetys then repeat above
+            //if TD+2pt >= 2 then take 1 TD+2pt and make it 1 TD and 1 safety then repeat above
         }
     }
     while(score > 1);
     return 0;
-}
-
-int safetys(int score){
-    int safety_count = 0;
-    for(int i = 0; i < score-3; i+=2){
-        safety_count++;
-    }
-    return safety_count;
-}
-
-int field_goals(int score){
-    int fg_count = 0;
-    for(int i = 0; i < score-4; i+=3){
-        fg_count++;
-    }
-    return fg_count;
-}
-
-int tds(int score){
-    int td_count = 0;
-    for(int i = 0; i < score-7; i+=6){
-        td_count++;
-    }
-    return td_count;
-}
-
-int td_plus_xp(int score){
-    int xp_count = 0;
-    for(int i = 0; i < score-8; i+=7){
-        xp_count++;
-    }
-    return xp_count;
-}
-
-int td_plus_twop(int score){
-    int twop_count = 0;
-    for(int i = 0; i < score-9; i+=8){
-        twop_count++;
-    }
-    return twop_count;
 }
